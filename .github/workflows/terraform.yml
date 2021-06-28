@@ -53,6 +53,11 @@ jobs:
           asdf install
           asdf reshim
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: keycloak-volumns
+          path: /var/lib/docker/volumes
+
       # Keycloak
       - name: Run local Keycloak instance
         run: |
@@ -110,7 +115,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request'
+        # if: github.event_name == 'pull_request'
         run: terraform plan -no-color
         working-directory: ./terraform
         continue-on-error: true
@@ -146,6 +151,11 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve
         working-directory: ./terraform
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: keycloak-volumns
+          path: /var/lib/docker/volumes
