@@ -93,18 +93,18 @@ jobs:
       - name: Terraform Variables
         run: |
           cat >"ci.auto.tfvars" <<EOF
-          dev_client_id="${{ secrets.KEYCLOAK_CLIENT_ID }}"
-          dev_username="${{ secrets.KEYCLOAK_USERNAME }}"
-          dev_password="${{ secrets.KEYCLOAK_PASSWORD }}"
-          dev_keycloak_url="${{ secrets.DEV_KEYCLOAK_URL }}"
-          test_client_id="${{ secrets.KEYCLOAK_CLIENT_ID }}"
-          test_username="${{ secrets.KEYCLOAK_USERNAME }}"
-          test_password="${{ secrets.KEYCLOAK_PASSWORD }}"
-          test_keycloak_url="${{ secrets.TEST_KEYCLOAK_URL }}"
-          prod_client_id="${{ secrets.KEYCLOAK_CLIENT_ID }}"
-          prod_username="${{ secrets.KEYCLOAK_USERNAME }}"
-          prod_password="${{ secrets.KEYCLOAK_PASSWORD }}"
-          prod_keycloak_url="${{ secrets.PROD_KEYCLOAK_URL }}"
+          dev_client_id="${{ env.KEYCLOAK_CLIENT_ID }}"
+          dev_username="${{ env.KEYCLOAK_USERNAME }}"
+          dev_password="${{ env.KEYCLOAK_PASSWORD }}"
+          dev_keycloak_url="${{ env.DEV_KEYCLOAK_URL }}"
+          test_client_id="${{ env.KEYCLOAK_CLIENT_ID }}"
+          test_username="${{ env.KEYCLOAK_USERNAME }}"
+          test_password="${{ env.KEYCLOAK_PASSWORD }}"
+          test_keycloak_url="${{ env.TEST_KEYCLOAK_URL }}"
+          prod_client_id="${{ env.KEYCLOAK_CLIENT_ID }}"
+          prod_username="${{ env.KEYCLOAK_USERNAME }}"
+          prod_password="${{ env.KEYCLOAK_PASSWORD }}"
+          prod_keycloak_url="${{ env.PROD_KEYCLOAK_URL }}"
           EOF
         working-directory: ./terraform
 
