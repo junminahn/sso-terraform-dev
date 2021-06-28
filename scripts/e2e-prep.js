@@ -12,11 +12,11 @@ const KEYCLOAK_URLS = [DEV_KEYCLOAK_URL, TEST_KEYCLOAK_URL, PROD_KEYCLOAK_URL];
 
 const targetRealms = ['onestopauth', 'onestopauth-business', 'onestopauth-basic', 'onestopauth-both'];
 
-const kcAdminClient = new KcAdminClient({ baseUrl: `${KEYCLOAK_URL}/auth` });
-
 async function main() {
   try {
     KEYCLOAK_URLS.forEach(async (url) => {
+      const kcAdminClient = new KcAdminClient({ baseUrl: `${url}/auth` });
+
       await kcAdminClient.auth({
         grantType: 'password',
         clientId: KEYCLOAK_CLIENT_ID,
