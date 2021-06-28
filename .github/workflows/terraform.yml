@@ -57,6 +57,7 @@ jobs:
         with:
           name: keycloak-volumns
           path: /var/lib/docker/volumes
+          if-no-files-found: ignore
 
       # Keycloak
       - name: Run local Keycloak instance
