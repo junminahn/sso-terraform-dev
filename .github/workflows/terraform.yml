@@ -58,12 +58,12 @@ jobs:
       #     name: keycloak-volumns
       #     path: /var/lib/docker/volumes
 
-      - name: Cache tools
-        uses: actions/cache@v2
-        with:
-          path: |
-            /var/lib/docker/volumes
-          key: ${{ runner.os }}-${{ hashFiles('**/.tool-versions') }}
+      # - name: Cache tools
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       /var/lib/docker/volumes
+      #     key: ${{ runner.os }}-${{ hashFiles('**/.tool-versions') }}
 
       # Keycloak
       - name: Run local Keycloak instance
@@ -115,12 +115,11 @@ jobs:
           EOF
         working-directory: ./terraform
 
-
-      - uses: actions/download-artifact@v2
+      - uses: actions/cache@v2
         with:
-          name: terraform-state
           path: terraform
-        continue-on-error: true
+          key: ${{ runner.os }}-terrastate-${{ hashFiles('terraform/*.tfstate*') }}
+          restore-keys: ${{ runner.os }}-terrastate-
 
       - name: Terraform Init
         id: init
@@ -169,10 +168,10 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: ./terraform
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: terraform-state
-          path: terraform/*.tfstate*
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: terraform-state
+      #     path: terraform/*.tfstate*
 
       # - uses: actions/upload-artifact@v2
       #   with:
