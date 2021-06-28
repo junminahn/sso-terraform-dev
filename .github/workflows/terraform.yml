@@ -172,8 +172,8 @@ jobs:
         with:
           name: terraform-state
           path: |
-            /terraform/terraform.tfstate
-            /terraform/terraform.tfstate.backup
+            terraform/terraform.tfstate
+            terraform/terraform.tfstate.backup
 
       # - uses: actions/upload-artifact@v2
       #   with:
