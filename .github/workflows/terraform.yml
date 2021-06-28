@@ -118,7 +118,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: terraform
-          key: ${{ runner.os }}-terrastate-${{ hashFiles('terraform/terraform.tfstate') }}
+          key: ${{ runner.os }}-terrastate-${{ hashFiles('terraform/*.*') }}
           restore-keys: ${{ runner.os }}-terrastate-
 
       - name: Terraform Init
@@ -167,6 +167,10 @@ jobs:
         # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve
         working-directory: ./terraform
+
+      - name: check
+        run: |
+          ls -al terraform
 
       # - uses: actions/upload-artifact@v2
       #   with:
