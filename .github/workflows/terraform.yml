@@ -115,6 +115,10 @@ jobs:
           EOF
         working-directory: ./terraform
 
+      - name: check
+        run: |
+          ls -al terraform
+
       - uses: actions/cache@v2
         with:
           path: terraform
