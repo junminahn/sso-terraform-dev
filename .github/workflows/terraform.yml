@@ -172,7 +172,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: terraform-state
-          path: terraform/*.tfstate.*
+          path: terraform/*.tfstate*
 
       # - uses: actions/upload-artifact@v2
       #   with:
