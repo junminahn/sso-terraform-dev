@@ -33,13 +33,9 @@ jobs:
         with:
           path: |
             **/node_modules
-            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Yarn dependencies in root
         run: yarn
-      - name: Install Yarn dependencies in next-app
-        run: yarn
-        working-directory: ./examples/next-app
 
       # ASDF TOOLS
       - name: Install asdf
