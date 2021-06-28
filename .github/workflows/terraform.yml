@@ -118,7 +118,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: terraform
-          key: ${{ runner.os }}-terrastate-${{ hashFiles('terraform/*.tfstate*') }}
+          key: ${{ runner.os }}-terrastate-${{ hashFiles('terraform/terraform.tfstate') }}
           restore-keys: ${{ runner.os }}-terrastate-
 
       - name: Terraform Init
