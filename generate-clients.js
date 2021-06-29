@@ -5,6 +5,10 @@ const shell = require('shelljs');
 const _ = require('lodash');
 const { TerraformGenerator } = require('terraform-generator');
 
+const mock = new TerraformGenerator();
+
+const keycloakRealm = mock.data('keycloak_realm', 'this', {});
+
 const realms = [
   { realm: 'onestopauth', idp: _.sortBy(['idir', 'github']) },
   { realm: 'onestopauth-basic', idp: _.sortBy(['idir', 'github', 'bceid-basic']) },
@@ -15,26 +19,26 @@ const realms = [
 module.exports = ({ projectName, identityProviders, validRedirectUrls, environments }) => {
   const targetRealm = realms.find((realm) => _.isEqual(realm.idp, _.sortBy(identityProviders)));
 
-  const tfg = new TerraformGenerator();
-
   if (!targetRealm) return [];
-
-  // Configure provider
-  tfg.module(`client_${projectName}`, {
-    source: '../../../modules/openid-client',
-    realm_id: 'data.keycloak_realm.this.id',
-    client_name: projectName,
-    valid_redirect_uris: validRedirectUrls,
-  });
 
   const SEPARATOR = '\n';
 
-  return _.map(environments, (env) => {
+  const paths = _.map(environments, (env) => {
     const outputDir = path.join(`terraform/keycloak-${env}/realms/${targetRealm.realm}`);
     const tfFile = `client-${projectName}.tf`;
     const target = path.join(outputDir, tfFile);
 
+    const tfg = new TerraformGenerator();
+
+    tfg.module(`client_${projectName}`, {
+      source: '../../../modules/openid-client',
+      realm_id: keycloakRealm.attr('id'),
+      client_name: projectName,
+      valid_redirect_uris: validRedirectUrls[env] || validRedirectUrls,
+    });
+
     const result = tfg.generate();
+
     const formatted =
       result.tf
         .split(SEPARATOR)
@@ -46,6 +50,6 @@ module.exports = ({ projectName, identityProviders, validRedirectUrls, environme
 
     child_process.execSync('terraform fmt', { cwd: outputDir });
 
-    return target;
+    return { realm: targetRealm.realm, paths };
   });
 };

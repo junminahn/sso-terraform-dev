@@ -19,13 +19,13 @@ module.exports = async ({ github, context }) => {
 
   console.log(projectName, identityProviders, validRedirectUrls, environments);
 
-  const newFiles = generateClients({
+  const { realm, paths } = generateClients({
     projectName,
     identityProviders,
     validRedirectUrls,
     environments,
   });
-  console.log(newFiles);
+  console.log(paths);
   // console.log('github', JSON.stringify(github, null, 2));
   // console.log('content', JSON.stringify(context, null, 2));
 
@@ -69,18 +69,18 @@ module.exports = async ({ github, context }) => {
       });
     }
 
-    for (let x = 0; x < newFiles.length; x++) {
+    for (let x = 0; x < paths.length; x++) {
       await github.repos.createOrUpdateFileContents({
         owner,
         repo,
         sha: await getSHA({
           ref: prBranchName,
-          path: newFiles[x],
+          path: paths[x],
         }),
         branch: prBranchName,
-        path: newFiles[x],
-        message: `request: add a client file`,
-        content: fs.readFileSync(newFiles[x], { encoding: 'base64' }),
+        path: paths[x],
+        message: `feat: add a client file`,
+        content: fs.readFileSync(paths[x], { encoding: 'base64' }),
       });
     }
 
@@ -91,7 +91,16 @@ module.exports = async ({ github, context }) => {
         base: repository.default_branch,
         head: prBranchName,
         title: `request: add client files for ${projectName} in ${environments.join(', ')}`,
-        body: null,
+        body: `#### Project Name: \`${_.startCase(projectName)}\`
+        #### Identity Providers: \`${identityProviders.join(', ')}\`
+        #### Target Realm: \`${realm}\`
+        #### Environments: \`${environments.join(', ')}\`
+
+        <details><summary>Show Plan</summary>
+
+        \`\`\`${process.env.PLAN}\`\`\`
+
+        </details>`,
         maintainer_can_modify: true,
       })
       .catch(() => null);
