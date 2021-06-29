@@ -50,6 +50,8 @@ module.exports = ({ projectName, identityProviders, validRedirectUrls, environme
 
     child_process.execSync('terraform fmt', { cwd: outputDir });
 
-    return { realm: targetRealm.realm, paths };
+    return target;
   });
+
+  return { realm: targetRealm.realm, paths };
 };
