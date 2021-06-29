@@ -88,7 +88,7 @@ module.exports = async ({ github, context }) => {
         repo,
         base: repository.default_branch,
         head: prBranchName,
-        title: `request: add client files for ${projectName} in ${environments.joint(', ')}`,
+        title: `request: add client files for ${projectName} in ${environments.join(', ')}`,
         body: null,
         maintainer_can_modify: true,
       })
