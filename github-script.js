@@ -1,15 +1,5 @@
 const fs = require('fs');
 const execa = require('execa');
-const yaml = require('js-yaml');
-
-const parseYaml = (content) => {
-  try {
-    const result = yaml.load(content);
-    return [result, null];
-  } catch (e) {
-    return [null, e.reason];
-  }
-};
 
 // This module runs in GitHub Action `github-script`
 // see https://github.com/actions/github-script#run-a-separate-file-with-an-async-function
