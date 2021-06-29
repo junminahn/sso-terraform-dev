@@ -12,6 +12,8 @@ module.exports = async ({ github, context }) => {
 
   const { projectName, identityProviders, validRedirectUrls, environments } = inputs;
 
+  console.log(projectName, identityProviders, validRedirectUrls, environments);
+
   const newFiles = generateClients({
     projectName,
     identityProviders: JSON.parse(identityProviders),
