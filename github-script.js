@@ -92,15 +92,18 @@ module.exports = async ({ github, context }) => {
         head: prBranchName,
         title: `request: add client files for ${projectName} in ${environments.join(', ')}`,
         body: `#### Project Name: \`${_.startCase(projectName)}\`
-        #### Identity Providers: \`${identityProviders.join(', ')}\`
-        #### Target Realm: \`${realm}\`
-        #### Environments: \`${environments.join(', ')}\`
-
-        <details><summary>Show Plan</summary>
-
-        \`\`\`${process.env.PLAN}\`\`\`
-
-        </details>`,
+#### Identity Providers: \`${identityProviders.join(', ')}\`
+#### Target Realm: \`${realm}\`
+#### Environments: \`${environments.join(', ')}\`
+${environments.map((env) => {
+  return `<details><summary>Show Details for ${env}</summary>
+<ul>Valid Redirect Urls
+${(validRedirectUrls[env] || validRedirectUrls || []).map((url) => {
+  return `<li>${url}</li>`;
+})}
+</ul>
+</details>`;
+})}`,
         maintainer_can_modify: true,
       })
       .catch(() => null);
