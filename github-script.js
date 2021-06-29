@@ -76,7 +76,7 @@ module.exports = async ({ github, context }) => {
         }),
         branch: prBranchName,
         path: newFiles[x],
-        message: 'test new branch',
+        message: `request: add a client file in ${newFiles[x]}`,
         content: fs.readFileSync(newFiles[x], { encoding: 'base64' }),
       });
     }
@@ -88,8 +88,8 @@ module.exports = async ({ github, context }) => {
         repo,
         base: repository.default_branch,
         head: prBranchName,
-        title: 'test title',
-        body: 'test body',
+        title: `request: add client files for ${projectName} in ${environments.joint(', ')}`,
+        body: null,
         maintainer_can_modify: true,
       })
       // Let's just ignore the error in case of duplicating pr
