@@ -9,6 +9,9 @@ on:
       identityProviders:
         description: "Identity Providers"
         required: true
+      validRedirectUrls:
+        description: "Valid Redirect Urls"
+        required: true
       environments:
         description: "Environments"
         required: true

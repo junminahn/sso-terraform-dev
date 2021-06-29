@@ -1,25 +1,33 @@
 const fs = require('fs');
-const execa = require('execa');
+const generateClients = require('./generate-clients');
 
 // This module runs in GitHub Action `github-script`
 // see https://github.com/actions/github-script#run-a-separate-file-with-an-async-function
 module.exports = async ({ github, context }) => {
   const { payload } = context;
+  const { inputs, repository } = payload;
 
-  const owner = payload.repository.owner.login;
-  const repo = payload.repository.name;
+  const owner = repository.owner.login;
+  const repo = repository.name;
 
+  const { projectName, identityProviders, validRedirectUrls, environments } = inputs;
+
+  const newFiles = generateClients({
+    projectName,
+    identityProviders: JSON.parse(identityProviders),
+    validRedirectUrls: JSON.parse(validRedirectUrls),
+    environments: JSON.parse(environments),
+  });
+  console.log(newFiles);
   // console.log('github', JSON.stringify(github, null, 2));
   console.log('content', JSON.stringify(context, null, 2));
-
-  return;
 
   try {
     const mainRef = await github.git
       .getRef({
         owner,
         repo,
-        ref: `heads/${payload.repository.default_branch}`,
+        ref: `heads/${repository.default_branch}`,
       })
       .then(
         (res) => res.data,
@@ -54,28 +62,27 @@ module.exports = async ({ github, context }) => {
       });
     }
 
-    await github.repos.createOrUpdateFileContents({
-      owner,
-      repo,
-      sha: await getSHA({
-        ref: prBranchName,
-        path: 'testss/reverse.js',
-      }),
-      branch: prBranchName,
-      path: 'testss/reverse.js',
-      message: 'test new branch',
-      content: fs.readFileSync('reverse.js', { encoding: 'base64' }),
-    });
-
-    const out = await execa('pre-commit', ['run', '--all-files']);
-    console.log(out);
+    for (let x = 0; x < newFiles.length; x++) {
+      await github.repos.createOrUpdateFileContents({
+        owner,
+        repo,
+        sha: await getSHA({
+          ref: prBranchName,
+          path: newFiles[x],
+        }),
+        branch: prBranchName,
+        path: newFiles[x],
+        message: 'test new branch',
+        content: fs.readFileSync(newFiles[x], { encoding: 'base64' }),
+      });
+    }
 
     // Create a PR to merge the licence ref into master
     await github.pulls
       .create({
         owner,
         repo,
-        base: payload.repository.default_branch,
+        base: repository.default_branch,
         head: prBranchName,
         title: 'test title',
         body: 'test body',
