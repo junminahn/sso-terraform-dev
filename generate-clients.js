@@ -13,8 +13,6 @@ const realms = [
 ];
 
 module.exports = ({ projectName, identityProviders, validRedirectUrls, environments }) => {
-  projectName = _.kebabCase(projectName);
-
   const targetRealm = realms.find((realm) => _.isEqual(realm.idp, _.sortBy(identityProviders)));
 
   const tfg = new TerraformGenerator();

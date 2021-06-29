@@ -1,4 +1,5 @@
 const fs = require('fs');
+const _ = require('lodash');
 const generateClients = require('./generate-clients');
 
 // This module runs in GitHub Action `github-script`
@@ -10,7 +11,8 @@ module.exports = async ({ github, context }) => {
   const owner = repository.owner.login;
   const repo = repository.name;
 
-  const { projectName, identityProviders, validRedirectUrls, environments } = inputs;
+  let { projectName, identityProviders, validRedirectUrls, environments } = inputs;
+  projectName = _.kebabCase(projectName);
 
   console.log(projectName, identityProviders, validRedirectUrls, environments);
 
@@ -40,7 +42,7 @@ module.exports = async ({ github, context }) => {
       console.error('no main branch');
     }
 
-    const prBranchName = 'testbranch222222222222222';
+    const prBranchName = `request/${projectName}`;
 
     let prRef = await github.git
       .getRef({
