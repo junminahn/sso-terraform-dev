@@ -3,6 +3,7 @@ name: Check code/commit conventions
 on:
   - push
   - pull_request
+  - pull_request_target
 
 jobs:
   pre-commit:

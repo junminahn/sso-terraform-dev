@@ -79,12 +79,11 @@ module.exports = async ({ github, context }) => {
         }),
         branch: prBranchName,
         path: newFiles[x],
-        message: `request: add a client file in ${newFiles[x]}`,
+        message: `request: add a client file`,
         content: fs.readFileSync(newFiles[x], { encoding: 'base64' }),
       });
     }
 
-    // Create a PR to merge the licence ref into master
     await github.pulls
       .create({
         owner,
@@ -95,7 +94,6 @@ module.exports = async ({ github, context }) => {
         body: null,
         maintainer_can_modify: true,
       })
-      // Let's just ignore the error in case of duplicating pr
       .catch(() => null);
   } catch (e) {
     console.log(e);
