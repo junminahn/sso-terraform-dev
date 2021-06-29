@@ -22,7 +22,7 @@ module.exports = async ({ github, context }) => {
   });
   console.log(newFiles);
   // console.log('github', JSON.stringify(github, null, 2));
-  console.log('content', JSON.stringify(context, null, 2));
+  // console.log('content', JSON.stringify(context, null, 2));
 
   try {
     const mainRef = await github.git
