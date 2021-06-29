@@ -97,11 +97,9 @@ module.exports = async ({ github, context }) => {
 #### Environments: \`${environments.join(', ')}\`
 ${environments.map((env) => {
   return `<details><summary>Show Details for ${env}</summary>
-<ul>Valid Redirect Urls
-${(validRedirectUrls[env] || validRedirectUrls || []).map((url) => {
-  return `<li>${url}</li>`;
-})}
-</ul>
+\`\`\`<ul>Valid Redirect Urls${(validRedirectUrls[env] || validRedirectUrls || []).map((url) => {
+    return `<li>${url}</li>`;
+  })}</ul>\`\`\`
 </details>`;
 })}`,
         maintainer_can_modify: true,
