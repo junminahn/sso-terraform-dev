@@ -1,17 +1,16 @@
 name: "Terraform"
 
-on: push
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - "terraform/**"
-#       - ".github/**"
-#   pull_request:
-#     paths:
-#       - "terraform/**"
-#       - ".github/**"
+on:
+  push:
+    branches:
+      - main-tmp
+    paths:
+      - "terraform/**"
+      - ".github/**"
+  pull_request:
+    paths:
+      - "terraform/**"
+      - ".github/**"
 
 env:
   TF_VERSION: 0.15.3
