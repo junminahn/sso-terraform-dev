@@ -13,14 +13,17 @@ module.exports = async ({ github, context }) => {
 
   let { projectName, identityProviders, validRedirectUrls, environments } = inputs;
   projectName = _.kebabCase(projectName);
+  identityProviders = JSON.parse(identityProviders);
+  validRedirectUrls = JSON.parse(validRedirectUrls);
+  environments = JSON.parse(environments);
 
   console.log(projectName, identityProviders, validRedirectUrls, environments);
 
   const newFiles = generateClients({
     projectName,
-    identityProviders: JSON.parse(identityProviders),
-    validRedirectUrls: JSON.parse(validRedirectUrls),
-    environments: JSON.parse(environments),
+    identityProviders,
+    validRedirectUrls,
+    environments,
   });
   console.log(newFiles);
   // console.log('github', JSON.stringify(github, null, 2));
