@@ -57,4 +57,4 @@ jobs:
           pip install -r requirements.txt
           asdf reshim
 
-      - uses: bcgov/sso-requests-actions@v0.1.0
+      - uses: bcgov/sso-requests-actions/request@v0.1.0
