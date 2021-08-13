@@ -57,7 +57,7 @@ jobs:
           pip install -r requirements.txt
           asdf reshim
 
-      - uses: bcgov/sso-requests-actions/request@v0.7.0
+      - uses: bcgov/sso-requests-actions/request@v0.8.0
         with:
           api-url: "https://zzzzzz.execute-api.ca-central-1.amazonaws.com/test/actions?status=create"
           auth-secret: "secrett"
